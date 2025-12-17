@@ -1,4 +1,5 @@
 import { Download } from 'lucide-react';
+import haniPhoto from '@/assets/hani_hassan.jpg';
 
 interface ProfileSectionProps {
   onHoverStart: () => void;
@@ -14,7 +15,7 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
             <div className="relative aspect-[3/4] bg-secondary overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary to-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop"
+                src={haniPhoto}
                 alt="Hani Hassan Portrait"
                 className="w-full h-full object-cover grayscale contrast-125 brightness-90 group-hover:scale-105 transition-transform duration-700"
               />
@@ -37,7 +38,8 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
             </p>
 
             <a
-              href="#"
+              href="/Hani_Hassan_UI_UX_Resume.pdf"
+              download="Hani_Hassan_UI_UX_Resume.pdf"
               className="bg-secondary-foreground text-secondary px-8 py-5 text-lg font-bold hover:bg-primary hover:text-primary-foreground transition-colors duration-300 flex items-center gap-3 w-fit group shadow-[5px_5px_0px_0px_hsl(var(--primary))] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
               onMouseEnter={onHoverStart}
               onMouseLeave={onHoverEnd}
