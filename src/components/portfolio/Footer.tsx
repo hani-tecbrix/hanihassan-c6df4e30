@@ -1,4 +1,4 @@
-import { Mail, Calendar, Linkedin } from 'lucide-react';
+import { Mail, Calendar, Linkedin, MessageCircle } from 'lucide-react';
 import { BehanceIcon, XIcon } from './SocialIcons';
 
 interface FooterProps {
@@ -21,14 +21,26 @@ const Footer = ({ onHoverStart, onHoverEnd }: FooterProps) => {
             LET'S TALK
           </h2>
           <div className="mt-8 flex flex-col gap-4 text-xl md:text-2xl font-light">
-            <a
-              href="mailto:inbox@hanihassan.com"
-              className="hover:text-primary transition-colors flex items-center gap-3 group"
-              onMouseEnter={onHoverStart}
-              onMouseLeave={onHoverEnd}
-            >
-              <Mail className="group-hover:rotate-12 transition-transform" /> inbox@hanihassan.com
-            </a>
+            <div className="flex items-center gap-6 flex-wrap">
+              <a
+                href="mailto:inbox@hanihassan.com"
+                className="hover:text-primary transition-colors flex items-center gap-3 group"
+                onMouseEnter={onHoverStart}
+                onMouseLeave={onHoverEnd}
+              >
+                <Mail className="group-hover:rotate-12 transition-transform" /> inbox@hanihassan.com
+              </a>
+              <a
+                href="https://wa.me/923074457776"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors flex items-center gap-3 group"
+                onMouseEnter={onHoverStart}
+                onMouseLeave={onHoverEnd}
+              >
+                <MessageCircle className="group-hover:rotate-12 transition-transform" /> +92 307 445 7776
+              </a>
+            </div>
             <a
               href="https://calendly.com/"
               target="_blank"
