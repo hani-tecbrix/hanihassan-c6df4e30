@@ -7,7 +7,8 @@ interface JourneySectionProps {
 }
 
 const experienceData = [
-  { company: "Vaival Technologies", role: "Expert AI/UI/UX", period: "Aug 2019 - Present", desc: "Leading the convergence of AI and UX. Crafting intuitive interfaces for complex systems." },
+  { company: "TecBrix", role: "Expert AI/UI/UX", period: "Mar 2024 - Present", desc: "Driving innovation at the intersection of AI and design. Building next-gen user experiences." },
+  { company: "Vaival Technologies", role: "Expert AI/UI/UX", period: "Aug 2019 - Mar 2024", desc: "Leading the convergence of AI and UX. Crafting intuitive interfaces for complex systems." },
   { company: "IQVIS Technologies", role: "Senior UI/UX Designer", period: "Feb 2010 - Aug 2019", desc: "Delivered high-impact design solutions for global enterprise clients." },
   { company: "SoftSolution", role: "Lead Design Department", period: "Mar 2008 - Aug 2018", desc: "Managed design teams and rigorous UI engineering workflows." },
   { company: "Soft Source Inc.", role: "Web Designer", period: "Aug 2009 - Nov 2009", desc: "Early adoption of responsive web standards and layout design." },
