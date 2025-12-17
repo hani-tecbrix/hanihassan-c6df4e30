@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { MoveUpRight } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { MoveUpRight, Download } from 'lucide-react';
 
 interface JourneySectionProps {
   onHoverStart: () => void;
@@ -22,6 +22,26 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-slide effect
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || isPaused || isDragging) return;
+
+    const interval = setInterval(() => {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const nextScroll = container.scrollLeft + 1;
+      
+      if (nextScroll >= maxScroll) {
+        container.scrollLeft = 0;
+      } else {
+        container.scrollLeft = nextScroll;
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [isPaused, isDragging]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0 || !scrollRef.current) return;
@@ -62,9 +82,10 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
               ref={scrollRef}
               className={`flex overflow-x-auto border-t border-foreground hide-scrollbar pb-6 snap-x snap-mandatory ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
               onMouseDown={handleMouseDown}
-              onMouseLeave={handleMouseLeaveOrUp}
+              onMouseLeave={() => { handleMouseLeaveOrUp(); setIsPaused(false); }}
               onMouseUp={handleMouseLeaveOrUp}
               onMouseMove={handleMouseMove}
+              onMouseEnter={() => setIsPaused(true)}
             >
               {experienceData.map((job, idx) => (
                 <div
@@ -86,6 +107,20 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
                 </div>
               ))}
               <div className="flex-shrink-0 w-8 md:w-16 h-auto"></div>
+            </div>
+
+            {/* Download Resume Link */}
+            <div className="mt-8 flex justify-end">
+              <a 
+                href="/Hani_Hassan_UI_UX_Resume.pdf" 
+                download 
+                className="inline-flex items-center gap-3 bg-foreground text-background px-6 py-4 font-bold uppercase tracking-widest text-sm hover:bg-primary hover:text-primary-foreground transition-colors duration-300 group shadow-[5px_5px_0px_0px_hsl(var(--primary))] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+                onMouseEnter={onHoverStart}
+                onMouseLeave={onHoverEnd}
+              >
+                <Download className="group-hover:animate-bounce" size={20} />
+                Download Resume
+              </a>
             </div>
           </div>
         </div>
