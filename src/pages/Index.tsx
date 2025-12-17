@@ -11,40 +11,39 @@ import SkillsSection from '@/components/portfolio/SkillsSection';
 import WorkShowcase from '@/components/portfolio/WorkShowcase';
 import ProfileSection from '@/components/portfolio/ProfileSection';
 import Footer from '@/components/portfolio/Footer';
-
 interface Project {
   image: string;
   title: string;
   category: string;
   description: string;
 }
-
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState({
+    x: 0,
+    y: 0
+  });
   const [isHovering, setIsHovering] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY
+      });
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-
   const handleHoverStart = () => setIsHovering(true);
   const handleHoverEnd = () => setIsHovering(false);
-
-  return (
-    <div className="bg-background min-h-screen font-sans selection:bg-primary selection:text-primary-foreground overflow-x-hidden relative text-foreground">
+  return <div className="bg-background min-h-screen font-sans selection:bg-primary selection:text-primary-foreground overflow-x-hidden relative text-foreground">
       {/* Sheets */}
       <CaseStudySheet project={selectedProject} onClose={() => setSelectedProject(null)} />
       <ContactSheet isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
@@ -79,7 +78,7 @@ const Index = () => {
       {/* Snake Game */}
       <section className="border-t border-primary">
         <div className="bg-surface-dark py-8 text-center border-b border-primary/20">
-          <h3 className="text-primary font-mono tracking-widest uppercase">The Concept Consumer</h3>
+          <h3 className="text-primary font-mono tracking-widest uppercase">My Work Process    </h3>
           <p className="text-muted-foreground text-xs mt-1">Collect the 7 Steps of Innovation</p>
         </div>
         <GenerativeCanvas onComplete={() => setIsContactOpen(true)} />
@@ -87,8 +86,6 @@ const Index = () => {
 
       {/* Footer */}
       <Footer onHoverStart={handleHoverStart} onHoverEnd={handleHoverEnd} />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
