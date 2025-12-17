@@ -10,6 +10,7 @@ import JourneySection from '@/components/portfolio/JourneySection';
 import SkillsSection from '@/components/portfolio/SkillsSection';
 import WorkShowcase from '@/components/portfolio/WorkShowcase';
 import ProfileSection from '@/components/portfolio/ProfileSection';
+import ClientsSection from '@/components/portfolio/ClientsSection';
 import Footer from '@/components/portfolio/Footer';
 interface Project {
   image: string;
@@ -71,6 +72,9 @@ const Index = () => {
 
       {/* Work */}
       <WorkShowcase onSelectProject={setSelectedProject} />
+
+      {/* Clients */}
+      <ClientsSection onHoverStart={handleHoverStart} onHoverEnd={handleHoverEnd} />
 
       {/* Profile */}
       <ProfileSection onHoverStart={handleHoverStart} onHoverEnd={handleHoverEnd} />

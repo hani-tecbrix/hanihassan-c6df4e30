@@ -24,23 +24,36 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Auto-slide effect
+  // Auto-slide effect with smooth animation
   useEffect(() => {
     const container = scrollRef.current;
     if (!container || isPaused || isDragging) return;
 
-    const interval = setInterval(() => {
+    const cardWidth = 384; // approx width of each card (w-96)
+    let animationId: number;
+    let lastTime = 0;
+    const speed = 50; // pixels per second
+
+    const animate = (currentTime: number) => {
+      if (lastTime === 0) lastTime = currentTime;
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+
       const maxScroll = container.scrollWidth - container.clientWidth;
-      const nextScroll = container.scrollLeft + 1;
+      const nextScroll = container.scrollLeft + speed * deltaTime;
       
       if (nextScroll >= maxScroll) {
         container.scrollLeft = 0;
       } else {
         container.scrollLeft = nextScroll;
       }
-    }, 30);
 
-    return () => clearInterval(interval);
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationId);
   }, [isPaused, isDragging]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
