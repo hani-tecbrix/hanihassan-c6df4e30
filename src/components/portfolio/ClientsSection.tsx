@@ -13,31 +13,58 @@ const clients = [
 ];
 
 const ClientsSection = ({ onHoverStart, onHoverEnd }: ClientsSectionProps) => {
+  const topRow = clients.slice(0, 3);
+  const bottomRow = clients.slice(3, 6);
+
   return (
     <section className="py-24 px-4 md:px-12 bg-background border-t border-border">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="text-xs font-mono text-primary uppercase tracking-widest">Trusted By</span>
-          <h2 className="text-3xl md:text-5xl font-display uppercase tracking-tight mt-4">
-            Brands I've Worked With
-          </h2>
-        </div>
+        <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-20">
+          {/* Left side - Title */}
+          <div className="lg:w-1/3 flex-shrink-0">
+            <h2 className="text-3xl md:text-4xl font-display tracking-tight">
+              Trusted Partners
+            </h2>
+            <p className="text-muted-foreground mt-4 text-sm md:text-base">
+              Collaborating with innovative companies and tools
+            </p>
+          </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 items-center">
-          {clients.map((client, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-center p-6 grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-500 group"
-              onMouseEnter={onHoverStart}
-              onMouseLeave={onHoverEnd}
-            >
-              <img
-                src={client.logo}
-                alt={client.name}
-                className="h-8 md:h-10 w-auto object-contain filter invert group-hover:scale-110 transition-transform duration-300"
-              />
+          {/* Right side - Logos in 2 rows */}
+          <div className="lg:w-2/3 flex flex-col gap-8">
+            <div className="flex flex-wrap justify-start items-center gap-8 md:gap-12">
+              {topRow.map((client, idx) => (
+                <div
+                  key={idx}
+                  className="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-500 group"
+                  onMouseEnter={onHoverStart}
+                  onMouseLeave={onHoverEnd}
+                >
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className="h-6 md:h-8 w-auto object-contain filter invert group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+            <div className="flex flex-wrap justify-start items-center gap-8 md:gap-12">
+              {bottomRow.map((client, idx) => (
+                <div
+                  key={idx}
+                  className="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-500 group"
+                  onMouseEnter={onHoverStart}
+                  onMouseLeave={onHoverEnd}
+                >
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className="h-6 md:h-8 w-auto object-contain filter invert group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
