@@ -28,14 +28,42 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
           </div>
 
           <div className="space-y-8">
-            <h2 className="text-6xl md:text-8xl font-display tracking-tighter leading-[0.9]">
-              BOLD<br />
-              COMMUNICATION<br />
-              <span className="stroke-text-white">IMPACT</span>
+            <h2 className="text-4xl md:text-6xl font-display tracking-tight leading-[1.1]">
+              Not just a designer.<br />
+              A <span className="text-primary">System Thinker.</span>
             </h2>
-            <p className="text-xl md:text-2xl opacity-70 max-w-md">
-              Creating digital experiences that merge the precision of engineering with the soul of communication design.
-            </p>
+            
+            <div className="space-y-4 text-lg md:text-xl opacity-80 max-w-xl">
+              <p>
+                I started as a graphic designer, fell in love with code, and now I live in the space between. I don't just hand off designs; I build prototypes that function.
+              </p>
+              <p>
+                My work is driven by a curiosity for what's next. Whether it's experimenting with Three.js or training custom LoRA models for UI generation, I'm always looking for the edge.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8 pt-4">
+              <div className="space-y-3">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <span className="text-primary">🎨</span> Visual
+                </h3>
+                <ul className="space-y-1 text-sm opacity-60">
+                  <li>UI / Visual Design</li>
+                  <li>3D & Motion</li>
+                  <li>Branding</li>
+                </ul>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                  <span className="text-primary">💻</span> Technical
+                </h3>
+                <ul className="space-y-1 text-sm opacity-60">
+                  <li>Front-end Dev</li>
+                  <li>Creative Coding</li>
+                  <li>Prompt Engineering</li>
+                </ul>
+              </div>
+            </div>
 
             <a
               href="/Hani_Hassan_UI_UX_Resume.pdf"
