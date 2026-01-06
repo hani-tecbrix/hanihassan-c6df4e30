@@ -13,6 +13,19 @@ const HeroSection = ({ scrollY, onHoverStart, onHoverEnd }: HeroSectionProps) =>
       <div className="absolute top-1/3 left-0 w-full h-px bg-foreground/5"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto w-full">
+        {/* Sticky Note */}
+        <div 
+          className="absolute -right-4 md:right-12 top-0 md:top-8 w-64 md:w-72 z-30 rotate-3 hover:rotate-0 transition-all duration-500 hover:scale-105 cursor-default"
+          style={{ transform: `rotate(3deg) translateY(${scrollY * 0.15}px)` }}
+        >
+          <div className="bg-primary p-5 shadow-[6px_6px_0px_0px_hsl(var(--foreground))]">
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-4 bg-foreground/20 rounded-sm"></div>
+            <p className="text-primary-foreground text-xs md:text-sm leading-relaxed font-medium">
+              Merging creative coding, rigorous design systems, and strategic branding, I build digital experiences that are not only usable, but <span className="font-bold underline decoration-2">distinctive</span>, <span className="font-bold underline decoration-2">cohesive</span>, and <span className="font-bold underline decoration-2">memorable</span>.
+            </p>
+          </div>
+        </div>
+
         <div className="overflow-hidden relative">
           <h1
             className="text-[15vw] leading-[0.85] font-display tracking-tighter text-foreground uppercase transform transition-transform duration-1000 ease-out inline-block relative"
