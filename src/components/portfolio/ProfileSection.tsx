@@ -100,7 +100,7 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary to-transparent opacity-30 group-hover:opacity-10 transition-opacity duration-500 z-10 pointer-events-none"></div>
+              {/* Gradient overlay removed for cleaner look */}
               
               {/* Static Image - shown when not hovering */}
               <img
