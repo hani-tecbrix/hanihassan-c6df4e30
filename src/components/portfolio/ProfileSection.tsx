@@ -1,5 +1,7 @@
 import { Download } from 'lucide-react';
+import { useRef, useState, useCallback } from 'react';
 import haniPhoto from '@/assets/hani_hassan.jpg';
+import profileVideo from '@/assets/profile_video.mp4';
 
 interface ProfileSectionProps {
   onHoverStart: () => void;
@@ -7,19 +9,118 @@ interface ProfileSectionProps {
 }
 
 const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const [playbackDirection, setPlaybackDirection] = useState<'forward' | 'reverse'>('forward');
+  const animationFrameRef = useRef<number | null>(null);
+
+  const reversePlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const step = () => {
+      if (video.currentTime <= 0.05) {
+        setPlaybackDirection('forward');
+        video.playbackRate = 1;
+        video.play();
+        return;
+      }
+      video.currentTime -= 0.033; // ~30fps reverse
+      animationFrameRef.current = requestAnimationFrame(step);
+    };
+    animationFrameRef.current = requestAnimationFrame(step);
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovering(true);
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    if (playbackDirection === 'reverse') {
+      setPlaybackDirection('forward');
+    }
+    video.playbackRate = 1;
+    video.play();
+  }, [playbackDirection]);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.pause();
+  }, []);
+
+  const handleVideoEnded = useCallback(() => {
+    if (!isHovering) return;
+    
+    const video = videoRef.current;
+    if (!video) return;
+
+    setPlaybackDirection('reverse');
+    video.pause();
+    reversePlay();
+  }, [isHovering, reversePlay]);
+
+  const handleReverseComplete = useCallback(() => {
+    if (!isHovering) return;
+    
+    const video = videoRef.current;
+    if (!video) return;
+
+    setPlaybackDirection('forward');
+    video.playbackRate = 1;
+    video.currentTime = 0;
+    video.play();
+  }, [isHovering]);
+
+  // Watch for reverse completion
+  const handleTimeUpdate = useCallback(() => {
+    if (playbackDirection === 'reverse' && videoRef.current && videoRef.current.currentTime <= 0.05) {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      handleReverseComplete();
+    }
+  }, [playbackDirection, handleReverseComplete]);
+
   return (
     <section className="py-24 bg-surface-dark text-secondary-foreground overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative">
-            <div className="relative aspect-[3/4] bg-secondary overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary to-transparent opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+            <div 
+              className="relative aspect-[3/4] bg-secondary overflow-hidden group cursor-pointer"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary to-transparent opacity-30 group-hover:opacity-10 transition-opacity duration-500 z-10 pointer-events-none"></div>
+              
+              {/* Static Image - shown when not hovering */}
               <img
                 src={haniPhoto}
                 alt="Hani Hassan Portrait"
-                className="w-full h-full object-cover grayscale contrast-125 brightness-90 group-hover:scale-105 transition-transform duration-700"
+                className={`absolute inset-0 w-full h-full object-cover grayscale contrast-125 brightness-90 transition-opacity duration-500 ${isHovering ? 'opacity-0' : 'opacity-100'}`}
               />
-              <div className="absolute bottom-8 right-8 bg-primary text-primary-foreground p-4 font-display text-xl leading-none shadow-[5px_5px_0px_0px_white]">
+              
+              {/* Video - revealed on hover */}
+              <video
+                ref={videoRef}
+                src={profileVideo}
+                muted
+                playsInline
+                onEnded={handleVideoEnded}
+                onTimeUpdate={handleTimeUpdate}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isHovering ? 'opacity-100' : 'opacity-0'}`}
+              />
+              
+              <div className="absolute bottom-8 right-8 bg-primary text-primary-foreground p-4 font-display text-xl leading-none shadow-[5px_5px_0px_0px_white] z-20">
                 HANI<br />HASSAN
               </div>
             </div>
