@@ -1,5 +1,5 @@
 import { Download } from 'lucide-react';
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import haniPhoto from '@/assets/hani_hassan.jpg';
 import profileVideo from '@/assets/profile_video.mp4';
 
@@ -11,84 +11,95 @@ interface ProfileSectionProps {
 const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovering, setIsHovering] = useState(false);
-  const [playbackDirection, setPlaybackDirection] = useState<'forward' | 'reverse'>('forward');
+  const isReversingRef = useRef(false);
   const animationFrameRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
 
-  const reversePlay = useCallback(() => {
+  // Cleanup animation frame on unmount
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
+  const stopReverse = useCallback(() => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    isReversingRef.current = false;
+  }, []);
+
+  const reversePlay = useCallback((timestamp: number) => {
+    const video = videoRef.current;
+    if (!video || !isReversingRef.current) return;
+
+    // Calculate time delta for smooth playback
+    if (lastTimeRef.current === 0) {
+      lastTimeRef.current = timestamp;
+    }
+    const delta = timestamp - lastTimeRef.current;
+    lastTimeRef.current = timestamp;
+
+    // Move backwards at normal playback speed (~60fps, so subtract ~16ms worth of video time)
+    const stepBack = (delta / 1000); // Convert to seconds
+    video.currentTime = Math.max(0, video.currentTime - stepBack);
+
+    if (video.currentTime <= 0.01) {
+      // Reached the beginning
+      stopReverse();
+      video.currentTime = 0;
+      
+      // If still hovering, play forward again
+      if (isHovering) {
+        video.play();
+      }
+      return;
+    }
+
+    animationFrameRef.current = requestAnimationFrame(reversePlay);
+  }, [isHovering, stopReverse]);
+
+  const startReverse = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const step = () => {
-      if (video.currentTime <= 0.05) {
-        setPlaybackDirection('forward');
-        video.playbackRate = 1;
-        video.play();
-        return;
-      }
-      video.currentTime -= 0.033; // ~30fps reverse
-      animationFrameRef.current = requestAnimationFrame(step);
-    };
-    animationFrameRef.current = requestAnimationFrame(step);
-  }, []);
+    video.pause();
+    isReversingRef.current = true;
+    lastTimeRef.current = 0;
+    animationFrameRef.current = requestAnimationFrame(reversePlay);
+  }, [reversePlay]);
 
   const handleMouseEnter = useCallback(() => {
     setIsHovering(true);
     const video = videoRef.current;
     if (!video) return;
 
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
+    // Stop any ongoing reverse playback
+    stopReverse();
 
-    if (playbackDirection === 'reverse') {
-      setPlaybackDirection('forward');
-    }
-    video.playbackRate = 1;
+    // Start playing forward
     video.play();
-  }, [playbackDirection]);
+  }, [stopReverse]);
 
   const handleMouseLeave = useCallback(() => {
     setIsHovering(false);
     const video = videoRef.current;
     if (!video) return;
 
+    // Stop everything
+    stopReverse();
     video.pause();
-  }, []);
+  }, [stopReverse]);
 
   const handleVideoEnded = useCallback(() => {
     if (!isHovering) return;
     
-    const video = videoRef.current;
-    if (!video) return;
-
-    setPlaybackDirection('reverse');
-    video.pause();
-    reversePlay();
-  }, [isHovering, reversePlay]);
-
-  const handleReverseComplete = useCallback(() => {
-    if (!isHovering) return;
-    
-    const video = videoRef.current;
-    if (!video) return;
-
-    setPlaybackDirection('forward');
-    video.playbackRate = 1;
-    video.currentTime = 0;
-    video.play();
-  }, [isHovering]);
-
-  // Watch for reverse completion
-  const handleTimeUpdate = useCallback(() => {
-    if (playbackDirection === 'reverse' && videoRef.current && videoRef.current.currentTime <= 0.05) {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-      handleReverseComplete();
-    }
-  }, [playbackDirection, handleReverseComplete]);
+    // Video finished playing forward, now reverse
+    startReverse();
+  }, [isHovering, startReverse]);
 
   return (
     <section className="py-24 bg-surface-dark text-secondary-foreground overflow-hidden">
@@ -116,7 +127,6 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
                 muted
                 playsInline
                 onEnded={handleVideoEnded}
-                onTimeUpdate={handleTimeUpdate}
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isHovering ? 'opacity-100' : 'opacity-0'}`}
               />
               
