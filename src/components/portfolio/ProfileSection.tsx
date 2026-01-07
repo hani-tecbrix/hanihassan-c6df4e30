@@ -43,8 +43,8 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
     const delta = timestamp - lastTimeRef.current;
     lastTimeRef.current = timestamp;
 
-    // Move backwards at normal playback speed (~60fps, so subtract ~16ms worth of video time)
-    const stepBack = (delta / 1000); // Convert to seconds
+    // Move backwards at 0.9x speed for a more dramatic looping effect
+    const stepBack = (delta / 1000) * 0.9;
     video.currentTime = Math.max(0, video.currentTime - stepBack);
 
     if (video.currentTime <= 0.01) {
