@@ -1,11 +1,7 @@
 import { Download } from 'lucide-react';
 import { useRef, useState, useCallback, useEffect } from 'react';
 import haniPhoto from '@/assets/hani_hassan.jpg';
-import profileVideo1 from '@/assets/profile_video.mp4';
-import profileVideo2 from '@/assets/profile_video_2.mp4';
-import profileVideo3 from '@/assets/profile_video_3.mp4';
-
-const profileVideos = [profileVideo1, profileVideo2, profileVideo3];
+import profileVideo from '@/assets/profile_video.mp4';
 
 interface ProfileSectionProps {
   onHoverStart: () => void;
@@ -15,7 +11,6 @@ interface ProfileSectionProps {
 const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovering, setIsHovering] = useState(false);
-  const [currentVideo, setCurrentVideo] = useState(profileVideos[0]);
   const isReversingRef = useRef(false);
   const animationFrameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
@@ -79,19 +74,13 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
 
   const handleMouseEnter = useCallback(() => {
     setIsHovering(true);
-    
-    // Pick a random video
-    const randomVideo = profileVideos[Math.floor(Math.random() * profileVideos.length)];
-    setCurrentVideo(randomVideo);
-    
     const video = videoRef.current;
     if (!video) return;
 
     // Stop any ongoing reverse playback
     stopReverse();
-    
-    // Reset video to start and play
-    video.currentTime = 0;
+
+    // Start playing forward
     video.play();
   }, [stopReverse]);
 
@@ -134,7 +123,7 @@ const ProfileSection = ({ onHoverStart, onHoverEnd }: ProfileSectionProps) => {
               {/* Video - revealed on hover */}
               <video
                 ref={videoRef}
-                src={currentVideo}
+                src={profileVideo}
                 muted
                 playsInline
                 onEnded={handleVideoEnded}
