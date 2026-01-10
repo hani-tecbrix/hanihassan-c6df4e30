@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import CaseStudySheet from '@/components/portfolio/CaseStudySheet';
 import ContactSheet from '@/components/portfolio/ContactSheet';
 import GenerativeCanvas from '@/components/portfolio/GenerativeCanvas';
-import ParticleCursor from '@/components/portfolio/ParticleCursor';
+import CustomCursor from '@/components/portfolio/CustomCursor';
 import Navigation from '@/components/portfolio/Navigation';
 import HeroSection from '@/components/portfolio/HeroSection';
 import Marquee from '@/components/portfolio/Marquee';
@@ -44,13 +44,13 @@ const Index = () => {
   }, []);
   const handleHoverStart = () => setIsHovering(true);
   const handleHoverEnd = () => setIsHovering(false);
-  return <div className="bg-background min-h-screen font-sans selection:bg-primary selection:text-primary-foreground overflow-x-hidden relative text-foreground cursor-none">
+  return <div className="bg-background min-h-screen font-sans selection:bg-primary selection:text-primary-foreground overflow-x-hidden relative text-foreground">
       {/* Sheets */}
       <CaseStudySheet project={selectedProject} onClose={() => setSelectedProject(null)} />
       <ContactSheet isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
 
-      {/* 3D Particle Cursor */}
-      <ParticleCursor />
+      {/* Custom Cursor */}
+      <CustomCursor mousePosition={mousePosition} isHovering={isHovering} />
 
       {/* Noise Overlay */}
       <div className="fixed inset-0 opacity-[0.04] pointer-events-none z-40 noise-overlay"></div>
