@@ -122,8 +122,22 @@
 }
 
 @layer utilities {
+  /* Hide system cursor globally on desktop for custom cursor */
+  .cursor-none,
+  .cursor-none * {
+    cursor: none !important;
+  }
+  
   /* Custom cursor states */
   .cursor-custom {
     cursor: none;
+  }
+  
+  /* Restore cursor on mobile */
+  @media (max-width: 767px), (hover: none) {
+    .cursor-none,
+    .cursor-none * {
+      cursor: auto !important;
+    }
   }
 }
