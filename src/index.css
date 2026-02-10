@@ -126,4 +126,107 @@
   .cursor-custom {
     cursor: none;
   }
+
+  /* Grunge Collage Motion Effects */
+
+  /* Torn paper edge - top */
+  .torn-edge-top {
+    --torn-color: hsl(var(--background));
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q10 8 20 16 Q30 2 40 14 Q50 6 60 18 Q70 4 80 12 Q90 8 100 16 Q110 2 120 14 Q130 10 140 18 Q150 4 160 12 Q170 6 180 16 Q190 2 200 14 Q210 8 220 18 Q230 4 240 12 Q250 6 260 16 Q270 2 280 14 Q290 10 300 18 Q310 4 320 12 Q330 6 340 16 Q350 2 360 14 Q370 8 380 18 Q390 4 400 12 Q410 6 420 16 Q430 2 440 14 Q450 10 460 18 Q470 4 480 12 Q490 6 500 16 Q510 2 520 14 Q530 8 540 18 Q550 4 560 12 Q570 6 580 16 Q590 2 600 14 Q610 10 620 18 Q630 4 640 12 Q650 6 660 16 Q670 2 680 14 Q690 8 700 18 Q710 4 720 12 Q730 6 740 16 Q750 2 760 14 Q770 10 780 18 Q790 4 800 12 Q810 6 820 16 Q830 2 840 14 Q850 8 860 18 Q870 4 880 12 Q890 6 900 16 Q910 2 920 14 Q930 10 940 18 Q950 4 960 12 Q970 6 980 16 Q990 2 1000 14 Q1010 8 1020 18 Q1030 4 1040 12 Q1050 6 1060 16 Q1070 2 1080 14 Q1090 10 1100 18 Q1110 4 1120 12 Q1130 6 1140 16 Q1150 2 1160 14 Q1170 8 1180 18 Q1190 4 1200 12 V0 H0 Z' fill='white'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q10 8 20 16 Q30 2 40 14 Q50 6 60 18 Q70 4 80 12 Q90 8 100 16 Q110 2 120 14 Q130 10 140 18 Q150 4 160 12 Q170 6 180 16 Q190 2 200 14 Q210 8 220 18 Q230 4 240 12 Q250 6 260 16 Q270 2 280 14 Q290 10 300 18 Q310 4 320 12 Q330 6 340 16 Q350 2 360 14 Q370 8 380 18 Q390 4 400 12 Q410 6 420 16 Q430 2 440 14 Q450 10 460 18 Q470 4 480 12 Q490 6 500 16 Q510 2 520 14 Q530 8 540 18 Q550 4 560 12 Q570 6 580 16 Q590 2 600 14 Q610 10 620 18 Q630 4 640 12 Q650 6 660 16 Q670 2 680 14 Q690 8 700 18 Q710 4 720 12 Q730 6 740 16 Q750 2 760 14 Q770 10 780 18 Q790 4 800 12 Q810 6 820 16 Q830 2 840 14 Q850 8 860 18 Q870 4 880 12 Q890 6 900 16 Q910 2 920 14 Q930 10 940 18 Q950 4 960 12 Q970 6 980 16 Q990 2 1000 14 Q1010 8 1020 18 Q1030 4 1040 12 Q1050 6 1060 16 Q1070 2 1080 14 Q1090 10 1100 18 Q1110 4 1120 12 Q1130 6 1140 16 Q1150 2 1160 14 Q1170 8 1180 18 Q1190 4 1200 12 V0 H0 Z' fill='white'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 20px;
+    mask-size: 100% 20px;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: bottom;
+    mask-position: bottom;
+  }
+
+  /* Halftone dot pattern overlay */
+  .halftone-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, hsl(var(--foreground) / 0.08) 1px, transparent 1px);
+    background-size: 8px 8px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Ink splatter decorative element */
+  .ink-splatter {
+    background-image: radial-gradient(ellipse at 30% 50%, hsl(var(--primary) / 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 30%, hsl(var(--foreground) / 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 80%, hsl(var(--primary) / 0.1) 0%, transparent 30%);
+  }
+
+  /* Washi tape strip */
+  .tape-strip {
+    background: hsl(var(--primary) / 0.25);
+    backdrop-filter: blur(1px);
+    transform: rotate(-2deg);
+    box-shadow: 0 1px 3px hsl(var(--foreground) / 0.1);
+  }
+
+  /* Distressed border */
+  .distressed-border {
+    border-image: repeating-linear-gradient(
+      90deg,
+      hsl(var(--foreground)) 0px,
+      hsl(var(--foreground)) 4px,
+      transparent 4px,
+      transparent 8px,
+      hsl(var(--foreground)) 8px,
+      hsl(var(--foreground)) 10px,
+      transparent 10px,
+      transparent 16px
+    ) 4;
+  }
+
+  /* Stamp effect */
+  .stamp-effect {
+    border: 3px dashed currentColor;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    position: relative;
+  }
+  .stamp-effect::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border: 1px solid currentColor;
+    opacity: 0.3;
+    border-radius: 2px;
+  }
+
+  /* Screen print texture */
+  .screen-print {
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(var(--foreground) / 0.03) 2px, hsl(var(--foreground) / 0.03) 4px);
+  }
+
+  /* Ripped paper shadow */
+  .ripped-shadow {
+    filter: drop-shadow(2px 4px 6px hsl(var(--foreground) / 0.3));
+  }
+
+  /* Collage float animation */
+  @keyframes collage-float {
+    0%, 100% { transform: translateY(0) rotate(var(--float-rotate, 0deg)); }
+    50% { transform: translateY(-6px) rotate(calc(var(--float-rotate, 0deg) + 1deg)); }
+  }
+  .collage-float {
+    animation: collage-float 4s ease-in-out infinite;
+  }
+
+  /* Jitter / shake micro-motion */
+  @keyframes grunge-jitter {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+    50% { transform: translate(1px, -1px) rotate(0.5deg); }
+    75% { transform: translate(-1px, -1px) rotate(-0.3deg); }
+  }
+  .grunge-jitter:hover {
+    animation: grunge-jitter 0.3s ease-in-out infinite;
+  }
 }

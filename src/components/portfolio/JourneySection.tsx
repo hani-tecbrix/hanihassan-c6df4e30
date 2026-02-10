@@ -29,10 +29,9 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
     const container = scrollRef.current;
     if (!container || isPaused || isDragging) return;
 
-    const cardWidth = 384; // approx width of each card (w-96)
     let animationId: number;
     let lastTime = 0;
-    const speed = 50; // pixels per second
+    const speed = 50;
 
     const animate = (currentTime: number) => {
       if (lastTime === 0) lastTime = currentTime;
@@ -73,11 +72,24 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
+  // Random rotation for collage feel per card
+  const rotations = [-1.2, 0.8, -0.5, 1.1, -0.9, 0.6, -1.5, 0.4];
+
   return (
-    <section id="journey" className="py-24 px-4 md:px-12 bg-card relative">
-      <div className="max-w-7xl mx-auto">
+    <section id="journey" className="py-24 px-4 md:px-12 bg-card relative screen-print overflow-hidden">
+      {/* Grunge ink splatter background */}
+      <div className="absolute inset-0 ink-splatter opacity-30 pointer-events-none"></div>
+      
+      {/* Floating tape strips */}
+      <div className="absolute top-8 right-20 w-28 h-5 tape-strip opacity-50 hidden md:block collage-float" style={{ '--float-rotate': '3deg' } as React.CSSProperties}></div>
+      <div className="absolute bottom-16 left-12 w-20 h-4 tape-strip opacity-40 hidden md:block" style={{ transform: 'rotate(-4deg)' }}></div>
+      
+      {/* Paper scrap decorations */}
+      <div className="absolute top-1/3 right-8 w-12 h-16 bg-primary/8 rotate-[15deg] border border-primary/15 pointer-events-none hidden md:block collage-float" style={{ '--float-rotate': '15deg', animationDelay: '2s' } as React.CSSProperties}></div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row gap-12">
-          <div className="hidden md:flex flex-col justify-between w-24 border-r border-border pr-6">
+          <div className="hidden md:flex flex-col justify-between w-24 border-r pr-6 distressed-border">
             <div className="h-full relative">
               <h2 className="text-8xl font-display tracking-tighter uppercase origin-top-left rotate-90 absolute top-0 left-8 whitespace-nowrap stroke-text">
                 The Journey
@@ -86,9 +98,13 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
           </div>
 
           <div className="flex-1">
-            <h3 className="text-4xl md:text-7xl font-bold leading-tight mb-16">
+            <h3 className="text-4xl md:text-7xl font-bold leading-tight mb-16 relative">
               FROM GRAPHIC ROOTS TO <br />
-              <span className="text-primary">AI-DRIVEN UX STRATEGY.</span>
+              <span className="text-primary relative">
+                AI-DRIVEN UX STRATEGY.
+                {/* Underline scribble effect */}
+                <span className="absolute -bottom-2 left-0 w-full h-1 bg-primary/30" style={{ backgroundImage: 'repeating-linear-gradient(90deg, hsl(var(--primary)) 0px, hsl(var(--primary)) 6px, transparent 6px, transparent 10px)' }}></span>
+              </span>
             </h3>
 
             <div
@@ -103,12 +119,22 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
               {experienceData.map((job, idx) => (
                 <div
                   key={idx}
-                  className="flex-shrink-0 w-[85vw] sm:w-80 md:w-96 border-r border-b border-foreground p-8 md:p-12 hover:bg-primary hover:text-primary-foreground transition-colors duration-500 relative snap-start group"
+                  className="flex-shrink-0 w-[85vw] sm:w-80 md:w-96 border-r border-b border-foreground p-8 md:p-12 hover:bg-primary hover:text-primary-foreground transition-colors duration-500 relative snap-start group grunge-jitter"
+                  style={{ transform: `rotate(${rotations[idx]}deg)`, marginTop: idx % 2 === 0 ? '0' : '8px' }}
                   onMouseEnter={onHoverStart}
                   onMouseLeave={onHoverEnd}
                 >
+                  {/* Tape strip on alternating cards */}
+                  {idx % 3 === 0 && (
+                    <div className="absolute -top-2 left-8 w-16 h-4 tape-strip z-10"></div>
+                  )}
+                  {/* Pin dot on other cards */}
+                  {idx % 3 !== 0 && (
+                    <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary shadow-sm z-10"></div>
+                  )}
+                  
                   <div className="flex justify-between items-start mb-8">
-                    <span className="text-xs md:text-sm font-mono border border-current px-2 py-1 rounded-full">{job.period}</span>
+                    <span className="text-xs md:text-sm font-mono border border-current px-2 py-1 stamp-effect">{job.period}</span>
                     <MoveUpRight className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </div>
                   <h4 className="text-2xl font-display uppercase mb-2 leading-none">{job.company}</h4>
@@ -127,7 +153,7 @@ const JourneySection = ({ onHoverStart, onHoverEnd }: JourneySectionProps) => {
               <a 
                 href="/Hani_Hassan_UI_UX_Resume.pdf" 
                 download 
-                className="inline-flex items-center gap-3 bg-foreground text-background px-6 py-4 font-bold uppercase tracking-widest text-sm hover:bg-primary hover:text-primary-foreground transition-colors duration-300 group shadow-[5px_5px_0px_0px_hsl(var(--primary))] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+                className="inline-flex items-center gap-3 bg-foreground text-background px-6 py-4 font-bold uppercase tracking-widest text-sm hover:bg-primary hover:text-primary-foreground transition-colors duration-300 group shadow-[5px_5px_0px_0px_hsl(var(--primary))] hover:translate-x-1 hover:translate-y-1 hover:shadow-none grunge-jitter"
                 onMouseEnter={onHoverStart}
                 onMouseLeave={onHoverEnd}
               >
